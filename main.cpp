@@ -1,5 +1,4 @@
 #include "shader.h"
-#include "camera.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -23,8 +22,6 @@ const int width = 800;
 const int height = 600;
 
 const bool wireframe = false;
-const unsigned int downsample = 5;//bloom downsample/upsample passes
-const float bloomRadius = 0.005f;
 const int samples = 4; //MSAA
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -38,8 +35,6 @@ bool firstMouse = true;
 
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
-
-Camera cam(glm::vec3(0, 0, 5));
 
 int main(void)
 {
@@ -140,8 +135,8 @@ int main(void)
 //shaders
 // -----------------------------------------------------------------------
 
-    Shader screenShader("./shaders/post/post.vert", "./shaders/post/post.frag");
-    Shader trangleShader("./shaders/main.vert", "./shaders/main.frag");
+    Shader screenShader("./shaders/post/post.vert", "./shaders/post/post.frag");//posts
+    Shader trangleShader("./shaders/main.vert", "./shaders/main.frag");//triangle
     
 
 // -----------------------------------------------------------------------
@@ -167,23 +162,32 @@ int main(void)
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+    glBindBuffer(GL_ARRAY_BUFFER, 0); 
+    glBindVertexArray(0); 
 
+// -----------------------------------------------------------------------
+//define triangle
+// -----------------------------------------------------------------------
+
+    //triangle vertices
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f, // left  
-         0.5f, -0.5f, 0.0f, // right 
-         0.0f,  0.5f, 0.0f  // top   
+        -1.0f,  1.0f,  0.0f, 1.0f,
+        -1.0f, -1.0f,  0.0f, 0.0f,
+         1.0f, -1.0f,  1.0f, 0.0f,
     }; 
 
+    //setup VAO and VBO for triangle
     unsigned int VBO, VAO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glBindVertexArray(VAO);
-
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
 
 // -----------------------------------------------------------------------
 //settings
@@ -191,15 +195,8 @@ int main(void)
     glEnable(GL_DEPTH_TEST);//depth
     glEnable(GL_BLEND);//translucency
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    // glEnable(GL_FRAMEBUFFER_SRGB); //gamma
+    // glEnable(GL_FRAMEBUFFER_SRGB); //gamma(gamma corrction is done is post so this is unused)
     glEnable(GL_MULTISAMPLE);//MSAA
-
-
-// -----------------------------------------------------------------------
-//texture bindings
-// -----------------------------------------------------------------------
-    screenShader.use();
-    screenShader.setInt("screenTexture", 0);
 
 // -----------------------------------------------------------------------
 //run loop
@@ -210,11 +207,7 @@ int main(void)
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
         
-
-        
-        // pass projection matrix to shader (note that in this case it could change every frame)
-        glm::mat4 projection = glm::perspective(glm::radians(cam.Zoom), (float)width / (float)height, 0.1f, 1000.0f);
-        glm::mat4 view = cam.GetViewMatrix();
+        //do calculations here
 
         processInput(window);
 
@@ -222,9 +215,9 @@ int main(void)
 //start rendering
 // -----------------------------------------------------------------------
         glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-        glClearColor(0.0f, 0.5f, 0.0f, 1.0f);
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);//background
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glEnable(GL_DEPTH_TEST);//depth
+        glEnable(GL_DEPTH_TEST);
 
         if(wireframe){
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -234,52 +227,50 @@ int main(void)
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
+        //draw objects here
+
 // -----------------------------------------------------------------------
 //resolve multisampled buffer
 // -----------------------------------------------------------------------
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        //resolve MSAA framebuffer
         glBindFramebuffer(GL_READ_FRAMEBUFFER, framebuffer);
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, intermediateFBO);
-        glReadBuffer(GL_COLOR_ATTACHMENT0);
-        glDrawBuffer(GL_COLOR_ATTACHMENT0);
         glBlitFramebuffer(
             0, 0, width, height,
             0, 0, width, height,
-            GL_COLOR_BUFFER_BIT, GL_NEAREST
+            GL_COLOR_BUFFER_BIT, GL_LINEAR
         );
         
         // -----------------------------------------------------------------------
         //render to screen
         // -----------------------------------------------------------------------
-        
+        //setup screen for drawing
         glViewport(0, 0, width, height);
-        glDisable(GL_DEPTH_TEST);//depth
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glDisable(GL_DEPTH_TEST);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);//background
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        float t = currentFrame;
+        //bind texture and draw to screen
         screenShader.use();
-        screenShader.setFloat("time", t);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, screenTexture);
         glBindVertexArray(quadVAO);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
+        //error reporting
         GLenum err = glGetError();
         if (err != GL_NO_ERROR)
             std::cout << "OpenGL error: " << err << std::endl;
-
-        
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    // glDeleteVertexArrays(1, &VAO);
-    // glDeleteBuffers(1, &VBO);
-    // glDeleteBuffers(1, &EBO);
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
 
     glfwTerminate();
     return 0;
@@ -290,30 +281,20 @@ int main(void)
 // ---------------------------------------------------------------------------------------------------------
 void processInput(GLFWwindow *window)
 {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS){
+        glfwSetWindowShouldClose(window, true);//close window on escape
+    }
 
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        cam.ProcessKeyboard(FORWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        cam.ProcessKeyboard(BACKWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        cam.ProcessKeyboard(LEFT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        cam.ProcessKeyboard(RIGHT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-        cam.ProcessKeyboard(DOWN, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-        cam.ProcessKeyboard(UP, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
+        //do something
+    }
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    // make sure the viewport matches the new window dimensions; note that width and 
-    // height will be significantly larger than specified on retina displays.
-    glViewport(0, 0, width, height);
+
 }
 
 
@@ -336,13 +317,11 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 
     lastX = xpos;
     lastY = ypos;
-
-    cam.ProcessMouseMovement(xoffset, yoffset);
 }
 
 // glfw: whenever the mouse scroll wheel scrolls, this callback is called
 // ----------------------------------------------------------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    cam.ProcessMouseScroll(static_cast<float>(yoffset));
+    
 }

@@ -40,8 +40,7 @@ void main()
     //normal
     FragColor = texture(screenTexture, TexCoords);
     //-----------------------------------------------------------------------------------------
-    //bloom
-    FragColor += texture(bloomTexture, TexCoords);
+
     //-----------------------------------------------------------------------------------------
     //kernel
     // vec2 pix = vec2(1.0/800.0, 1.0/600.0);//800 and 600 are image dims
@@ -79,7 +78,7 @@ void main()
 
     color = ACESFittedTonemap(color);
 
-    FragColor = vec4(color, 1.0);
+    // FragColor = vec4(color, 1.0);
     
 
     //-----------------------------------------------------------------------------------------
