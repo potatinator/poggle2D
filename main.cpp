@@ -48,7 +48,7 @@ int main(void)
     //glfwWindowHint(GLFW_SAMPLES, 4);
 
     /* Create a windowed mode window and its OpenGL contexts */
-    window = glfwCreateWindow(width, height, "3D UwU", NULL, NULL);
+    window = glfwCreateWindow(width, height, "2D UwU", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -137,7 +137,6 @@ int main(void)
 
     Shader screenShader("./shaders/post/post.vert", "./shaders/post/post.frag");//posts
     Shader trangleShader("./shaders/main.vert", "./shaders/main.frag");//triangle
-    
 
 // -----------------------------------------------------------------------
 //define quad for post rendering
@@ -192,7 +191,7 @@ int main(void)
 // -----------------------------------------------------------------------
 //settings
 // -----------------------------------------------------------------------
-    glEnable(GL_DEPTH_TEST);//depth
+    // glEnable(GL_DEPTH_TEST);//depth
     glEnable(GL_BLEND);//translucency
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     // glEnable(GL_FRAMEBUFFER_SRGB); //gamma(gamma corrction is done is post so this is unused)
@@ -211,9 +210,9 @@ int main(void)
 
         processInput(window);
 
-// -----------------------------------------------------------------------
-//start rendering
-// -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        //start rendering
+        // -----------------------------------------------------------------------
         glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);//background
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -229,9 +228,9 @@ int main(void)
 
         //draw objects here
 
-// -----------------------------------------------------------------------
-//resolve multisampled buffer
-// -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        //resolve multisampled buffer
+        // -----------------------------------------------------------------------
 
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         //resolve MSAA framebuffer
@@ -268,7 +267,7 @@ int main(void)
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-
+    //close window
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
 
