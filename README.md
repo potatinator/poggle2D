@@ -7,7 +7,7 @@ or on windows:<br/>
 ``` ./build/src/2d.exe  ```<br/>
 this will compile to /build/src/2d, then run it. make sure the dir exists, the command is run from the 3d dir, and all includes are installed
 ## dependancies
- - glfw
- - assimp
- - glm
+ - glfw(mingw-w64-ucrt-x86_64-glfw)
+ - assimp(mingw-w64-ucrt-x86_64-assimp)
+ - glm(mingw-w64-ucrt-x86_64-glm)
  - opengl(in windows SDK)
