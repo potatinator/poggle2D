@@ -4,97 +4,47 @@ out vec4 FragColor;
 in vec2 TexCoords;
 
 uniform sampler2D screenTexture;
-uniform sampler2D bloomTexture;
 uniform float time;
 
-float rand(vec2 co){
-    return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
-}
 
-vec3 whitenHighlights(vec3 color, float threshold)
-{
-    float lum = dot(color, vec3(0.2126, 0.7152, 0.0722));
-    float t = smoothstep(threshold, threshold * 4.0, lum); // tweak range
-    return mix(color, vec3(lum), t);
-}
-
-vec3 ACESFittedTonemap(vec3 color)
-{
-    color = pow(color, vec3(1.0 / 2.2));
-
-    float exposureBias = 0.8;
-    color *= exposureBias;
-
-    color = (color*(2.51*color+0.03))/(color*(2.43*color+0.59)+0.14);//bright parts dont get low sat
-
-
-    // Clamp to displayable range
-    color = clamp(color, 0.0, 1.0);
-
-
-    return color;
+vec3 aces_tonemap(vec3 color){	
+	mat3 m1 = mat3(
+        0.59719, 0.07600, 0.02840,
+        0.35458, 0.90834, 0.13383,
+        0.04823, 0.01566, 0.83777
+	);
+	mat3 m2 = mat3(
+        1.60475, -0.10208, -0.00327,
+        -0.53108,  1.10813, -0.07276,
+        -0.07367, -0.00605,  1.07602
+	);
+	vec3 v = m1 * color;    
+	vec3 a = v * (v + 0.0245786) - 0.000090537;
+	vec3 b = v * (0.983729 * v + 0.4329510) + 0.238081;
+	return pow(clamp(m2 * (a / b), 0.0, 1.0), vec3(1.0 / 2.2));	
 }
 void main()
 {
+    
+    float exposure = 1.0;
+    float contrast = 1.0;
+    float brightness = 0.0;
+    float saturation = 1.0;
+    float gamma = 1.0/2.2;
 
-    //normal
     FragColor = texture(screenTexture, TexCoords);
-    //-----------------------------------------------------------------------------------------
-
-    //-----------------------------------------------------------------------------------------
-    //kernel
-    // vec2 pix = vec2(1.0/800.0, 1.0/600.0);//800 and 600 are image dims
-
-    // int size = 3;//side length of kernel
-    // float kernel[9] = float[](
-        // 0.0625, 0.125, 0.0625,
-        // 0.125 , 0.25 , 0.125,
-        // 0.0625, 0.125, 0.0625
-    // );
-    // vec3 sampleTex[kernel.length()];
-    // vec2 mid = vec2((size-1)/2);
-    // for(int i = 0; i < size; i++)
-    // {
-        // for(int j = 0; j < size; j++)
-        // {
-            // sampleTex[(size*i)+j] = vec3(texture(screenTexture, TexCoords.st + (mid-vec2(j,i))*pix));
-        // }
-    // }
-    // vec3 col = vec3(0.0);
-    // for(int i = 0; i < kernel.length(); i++)
-        // col += sampleTex[i] * kernel[i];
-    // FragColor = vec4(col, 1.0);
-    //-----------------------------------------------------------------------------------------
-    //rotate
-    // vec3 col = texture(screenTexture, vec2(1.0-TexCoords.y, TexCoords.x)).rgb;
-    // FragColor = vec4(col, 1.0);
-    //-----------------------------------------------------------------------------------------
-    //tone mapping
     vec3 color = FragColor.rgb;
 
-    float luminance = dot(color, vec3(0.3, 0.59, 0.11));
-    float desatFactor = clamp((1.0 - luminance) / 0.5, 0.0, 1.0);
-    color = mix(vec3(luminance), color, desatFactor);
+    color *= exposure;
+    //wb
+    color = contrast * (color - vec3(0.5)) + vec3(0.5) + vec3(brightness);
+    //filter
+    color = mix(vec3(dot(color, vec3(0.2126, 0.7152, 0.0722))), color, saturation);
+    color = pow(color, vec3(gamma));
 
-    color = ACESFittedTonemap(color);
+    // color = aces_tonemap(color);
 
-    // FragColor = vec4(color, 1.0);
+    FragColor = vec4(color, 1.0);
     
-
-    //-----------------------------------------------------------------------------------------
-    //greyscale
-    // col = FragColor;
-    // float average = 0.2126 * col.r + 0.7152 * col.g + 0.0722 * col.b;
-    // FragColor = vec4(average, average, average, 1.0);
-    //-----------------------------------------------------------------------------------------
-    //invert
-    // col = FragColor;
-    // FragColor = vec4(vec3(1.0)-col, 1.0);
-    //-----------------------------------------------------------------------------------------
-    //noise chanels
-    // vec3 col = FragColor;
-    // vec2 coord = round(TexCoords*10)/10;
-    // FragColor = vec4(clamp((vec3(rand(coord*time), rand(vec2(rand(coord*time), rand(coord.yx*time))), rand(coord.yx*time))-0.5) * 10, 0, 1)*col, 1.0);
-    //-----------------------------------------------------------------------------------------
     
 } 

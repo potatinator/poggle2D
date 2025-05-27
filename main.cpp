@@ -1,4 +1,5 @@
 #include "shader.h"
+#include "gameobject.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -21,7 +22,7 @@ using namespace std;
 const int width = 800;
 const int height = 600;
 
-const bool wireframe = false;
+bool wireframe = false;
 const int samples = 4; //MSAA
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -136,8 +137,22 @@ int main(void)
 // -----------------------------------------------------------------------
 
     Shader screenShader("./shaders/post/post.vert", "./shaders/post/post.frag");//posts
-    Shader trangleShader("./shaders/main.vert", "./shaders/main.frag");//triangle
+    Shader trangleShader("./shaders/main.vert", "./shaders/color.frag");//triangle
 
+    GameObject* objects[] = {
+        new TexturedGameObject(
+            glm::vec2(0.0f, 0.0f), // position
+            Texture2D("./resources/placeholder.png", true),
+            glm::vec2(100.0f, 100.0f), // scale
+            0
+        ),
+        new TexturedGameObject(
+            glm::vec2(0.0f, 0.0f), // position
+            Texture2D("./resources/grid.png", true),
+            glm::vec2(800.0f, 600.0f), // scale
+            1
+        )
+    };
 // -----------------------------------------------------------------------
 //define quad for post rendering
 // -----------------------------------------------------------------------
@@ -165,30 +180,6 @@ int main(void)
     glBindVertexArray(0); 
 
 // -----------------------------------------------------------------------
-//define triangle
-// -----------------------------------------------------------------------
-
-    //triangle vertices
-    float vertices[] = {
-        -1.0f,  1.0f,  0.0f, 1.0f,
-        -1.0f, -1.0f,  0.0f, 0.0f,
-         1.0f, -1.0f,  1.0f, 0.0f,
-    }; 
-
-    //setup VAO and VBO for triangle
-    unsigned int VBO, VAO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-
-
-// -----------------------------------------------------------------------
 //settings
 // -----------------------------------------------------------------------
     // glEnable(GL_DEPTH_TEST);//depth
@@ -207,6 +198,8 @@ int main(void)
         lastFrame = currentFrame;
         
         //do calculations here
+        glm::mat4 view = glm::mat4(1.0f);
+        view = glm::ortho(-(float)width/2.0f, (float)width/2.0f, -(float)height/2.0f, (float)height/2.0f, 0.0f, 10.0f);
 
         processInput(window);
 
@@ -214,20 +207,25 @@ int main(void)
         //start rendering
         // -----------------------------------------------------------------------
         glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);//background
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);//background
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glEnable(GL_DEPTH_TEST);
 
         if(wireframe){
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         }
-        
-        trangleShader.use();
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         //draw objects here
+        objects[0]->position = glm::vec2(0.0f, 0.0f);
+        objects[0]->angle += 50.0f * deltaTime;
+        
+        objects[1]->position = glm::vec2(-400.0f, 300.0f);
 
+        for(int i=0; i<sizeof(objects)/sizeof(objects[0]); i++){
+            objects[i]->setView(view);
+            objects[i]->update(deltaTime);
+            objects[i]->draw();
+        }
         // -----------------------------------------------------------------------
         //resolve multisampled buffer
         // -----------------------------------------------------------------------
@@ -267,9 +265,6 @@ int main(void)
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    //close window
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
 
     glfwTerminate();
     return 0;
@@ -284,9 +279,8 @@ void processInput(GLFWwindow *window)
         glfwSetWindowShouldClose(window, true);//close window on escape
     }
 
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
-        //do something
-    }
+    wireframe = glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS;
+    
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
