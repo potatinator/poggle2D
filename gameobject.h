@@ -33,10 +33,10 @@ class GameObject{
         int layer;
 
         GameObject(glm::vec2 pos, glm::vec2 scale, int layer, float angle, const Shader& shader);
-        void update(float dt);
-        void draw();
-        void setView(glm::mat4 view);
-        void setDebug(bool debug);
+        virtual void update(float dt);
+        virtual void draw();
+        virtual void setView(glm::mat4 view);
+        virtual void setDebug(bool debug);
 };
 class TexturedGameObject : public GameObject {
     public:
