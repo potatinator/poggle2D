@@ -25,7 +25,7 @@ void GameObject::update(float dt){
 void GameObject::draw() {
     this->shader.use();
     this->shader.setMat4("transform", this->transform);
-    this->shader.setInt("layer", layer);
+    this->shader.setInt("layer", -layer);
     glBindVertexArray(this->VAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);

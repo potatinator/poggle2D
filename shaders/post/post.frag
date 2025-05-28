@@ -42,7 +42,7 @@ void main()
     color = mix(vec3(dot(color, vec3(0.2126, 0.7152, 0.0722))), color, saturation);
     color = pow(color, vec3(gamma));
 
-    // color = aces_tonemap(color);
+//     color = aces_tonemap(color);
 
     FragColor = vec4(color, 1.0);
     

@@ -1,5 +1,6 @@
 #include "shader.h"
 #include "gameobject.h"
+#include "game.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -22,20 +23,17 @@ using namespace std;
 const int width = 800;
 const int height = 600;
 
-bool wireframe = false;
 const int samples = 4; //MSAA
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-void processInput(GLFWwindow *window);
-
-float lastX = width / 2.0f;
-float lastY = height / 2.0f;
-bool firstMouse = true;
+void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode);
 
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
+
+Game2D game(width, height);
 
 int main(void)
 {
@@ -69,7 +67,8 @@ int main(void)
 
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);    
+    glfwSetKeyCallback(window, key_callback);
     glfwSetScrollCallback(window, scroll_callback);
 
     // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -137,22 +136,8 @@ int main(void)
 // -----------------------------------------------------------------------
 
     Shader screenShader("./shaders/post/post.vert", "./shaders/post/post.frag");//posts
-    Shader trangleShader("./shaders/main.vert", "./shaders/color.frag");//triangle
 
-    GameObject* objects[] = {
-        new TexturedGameObject(
-            glm::vec2(0.0f, 0.0f), // position
-            Texture2D("./resources/placeholder.png", true),
-            glm::vec2(100.0f, 100.0f), // scale
-            0
-        ),
-        new TexturedGameObject(
-            glm::vec2(0.0f, 0.0f), // position
-            Texture2D("./resources/grid.png", true),
-            glm::vec2(800.0f, 600.0f), // scale
-            1
-        )
-    };
+    game.init();
 // -----------------------------------------------------------------------
 //define quad for post rendering
 // -----------------------------------------------------------------------
@@ -197,35 +182,20 @@ int main(void)
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
         
-        //do calculations here
-        glm::mat4 view = glm::mat4(1.0f);
-        view = glm::ortho(-(float)width/2.0f, (float)width/2.0f, -(float)height/2.0f, (float)height/2.0f, 0.0f, 10.0f);
+        game.update(deltaTime);
 
-        processInput(window);
+        // processInput(window);
+
+        game.processInputs();
 
         // -----------------------------------------------------------------------
         //start rendering
         // -----------------------------------------------------------------------
         glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);//background
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glEnable(GL_DEPTH_TEST);
-
-        if(wireframe){
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        }
-
-        //draw objects here
-        objects[0]->position = glm::vec2(0.0f, 0.0f);
-        objects[0]->angle += 50.0f * deltaTime;
         
-        objects[1]->position = glm::vec2(-400.0f, 300.0f);
+        game.render();
 
-        for(int i=0; i<sizeof(objects)/sizeof(objects[0]); i++){
-            objects[i]->setView(view);
-            objects[i]->update(deltaTime);
-            objects[i]->draw();
-        }
         // -----------------------------------------------------------------------
         //resolve multisampled buffer
         // -----------------------------------------------------------------------
@@ -271,50 +241,37 @@ int main(void)
 }
 
 
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow *window)
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS){
         glfwSetWindowShouldClose(window, true);//close window on escape
     }
+    if (key >= 0 && key < 1024)
+    {
+        if (action == GLFW_PRESS)
+            game.keys[key] = true;
+        else if (action == GLFW_RELEASE)
+        {
+            game.keys[key] = false;
+        }
+    }
 
-    wireframe = glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS;
+    // game.debug = glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS;
+    // game.wireframe = glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS || game.debug;
     
 }
 
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-
-}
+{}
 
 
-// glfw: whenever the mouse moves, this callback is called
-// -------------------------------------------------------
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 {
     float xpos = static_cast<float>(xposIn);
     float ypos = static_cast<float>(yposIn);
 
-    if (firstMouse)
-    {
-        lastX = xpos;
-        lastY = ypos;
-        firstMouse = false;
-    }
-
-    float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
-
-    lastX = xpos;
-    lastY = ypos;
+    game.mousePos = glm::vec2(xpos, ypos);
 }
 
-// glfw: whenever the mouse scroll wheel scrolls, this callback is called
-// ----------------------------------------------------------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-    
-}
+{}
