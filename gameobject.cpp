@@ -1,6 +1,7 @@
 
 #include "gameobject.h"
 
+GameObject::GameObject(){}
 GameObject::GameObject(glm::vec2 pos, glm::vec2 scale, int layer, float angle, const Shader& shader)
     : position(pos), scale(scale), angle(angle), shader(shader), layer(layer) {
     glGenVertexArrays(1, &VAO);

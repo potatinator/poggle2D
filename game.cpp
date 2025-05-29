@@ -1,4 +1,9 @@
+#include <glad/glad.h>
+#include <GL/gl.h>
+#include <GL/glext.h>
+#include <GLFW/glfw3.h>
 #include "game.h"
+#include "ui.h"
 
 Game2D::Game2D(unsigned int width, unsigned int height) : width(width), height(height), keys(), mousePos(0.0, 0.0), wireframe(false), debug(false){}
 
@@ -8,6 +13,13 @@ Game2D::~Game2D(){
 
 void Game2D::init(){
     //load
+
+    this->button = Button(
+        glm::vec2(0.0f, 0.0f), // position
+        glm::vec2(800.0f, 600.0f), // scale
+        2,
+        0.0,
+        Shader("./shaders/main.vert","./shaders/color.frag"));
 
     objects.push_back(
         new TexturedGameObject(
@@ -23,6 +35,7 @@ void Game2D::init(){
             glm::vec2(800.0f, 600.0f), // scale
             1
     ));
+    objects.push_back(&button);
 }
 void Game2D::update(float dt){
     glm::mat4 view = glm::mat4(1.0f);
@@ -56,4 +69,5 @@ void Game2D::render(){
 void Game2D::processInputs(){
     debug = keys[GLFW_KEY_S];
     wireframe = keys[GLFW_KEY_W] || this->debug;
+    
 }

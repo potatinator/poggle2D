@@ -33,6 +33,7 @@ class GameObject{
         int layer;
 
         GameObject(glm::vec2 pos, glm::vec2 scale, int layer, float angle, const Shader& shader);
+        GameObject();
         virtual void update(float dt);
         virtual void draw();
         virtual void setView(glm::mat4 view);

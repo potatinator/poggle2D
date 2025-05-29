@@ -2,18 +2,16 @@
 #define GAME_H
 
 #include <glm/glm.hpp>
-#include <glad/glad.h>
-#include <GL/gl.h>
-#include <GL/glext.h>
 #include <vector>
-#include <GLFW/glfw3.h>
 #include "gameobject.h"
+#include "ui.h"
 
 
 class Game2D{
     public:
         bool keys[1024];
         glm::vec2 mousePos;
+        Button button;
         unsigned int width, height;
         bool wireframe;
         bool debug;
