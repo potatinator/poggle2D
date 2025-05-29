@@ -21,17 +21,17 @@ void Game2D::init(){
             glm::vec2(0.0f, 0.0f), // position
             Texture2D("./resources/grid.png", true),
             glm::vec2(800.0f, 600.0f), // scale
-            9
+            1
     ));
 }
 void Game2D::update(float dt){
     glm::mat4 view = glm::mat4(1.0f);
-    view = glm::ortho(0.0f, (float)width, 0.0f, (float)height, 0.0f, 10.0f);
+    view = glm::ortho(0.0f, (float)width, (float)height, 0.0f, 0.0f, 10.0f);
 
     objects.at(0)->position = glm::vec2(width/2, height/2);
     objects.at(0)->angle += 50.0f * dt;
     
-    objects.at(1)->position = glm::vec2(0.0f, height);
+    objects.at(1)->position = glm::vec2(0.0f, 0.0f);
 
     for(GameObject* object : objects){
         object->setDebug(debug);

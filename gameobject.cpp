@@ -16,10 +16,10 @@ GameObject::GameObject(glm::vec2 pos, glm::vec2 scale, int layer, float angle, c
 void GameObject::update(float dt){
     transform = glm::mat4(1.0);
     transform = glm::translate(transform, glm::vec3(this->position, 0.0f));  // first translate (transformations are: scale happens first, then rotation, and then final translation happens; reversed order)
-    transform = glm::translate(transform, glm::vec3(0.5f * this->scale.x, -0.5f * this->scale.y, 0.0f)); // move origin of rotation to center of quad
+    transform = glm::translate(transform, glm::vec3(0.5f * this->scale.x, 0.5f * this->scale.y, 0.0f)); // move origin of rotation to center of quad
     transform = glm::rotate(transform, glm::radians(this->angle), glm::vec3(0.0f, 0.0f, 1.0f)); // then rotate
-    transform = glm::translate(transform, glm::vec3(-0.5f * this->scale.x, 0.5f * this->scale.y, 0.0f)); // move origin back
-    transform = glm::scale(transform, glm::vec3(this->scale, 1.0f)); // last scale
+    transform = glm::translate(transform, glm::vec3(-0.5f * this->scale.x, -0.5f * this->scale.y, 0.0f)); // move origin back
+    transform = glm::scale(transform, glm::vec3(this->scale*glm::vec2(1.0, -1.0), 1.0f)); // last scale
 
 }
 void GameObject::draw() {
