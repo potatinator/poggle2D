@@ -5,18 +5,20 @@
 #include "texture.h"
 #include "gameobject.h"
 #include <glm/glm.hpp>
+#include <memory>
 
 class Button : public GameObject{
     public:
         glm::vec2 mousePos;
         bool hover;
         bool pressed;
+        bool mousePressed;
         static void defaultCallback() {}
         void (*pressCallback)() = &defaultCallback;
         void (*releaseCallback)() = &defaultCallback;
         void (*hoverCallback)() = &defaultCallback;
         void (*holdCallback)() = &defaultCallback;
-        Button(glm::vec2 pos, glm::vec2 scale, int layer, float angle, const Shader& shader);
+        Button(glm::vec2 pos, glm::vec2 scale, int layer, float angle, std::shared_ptr<Shader> shader);
         Button();
         virtual void update(float dt);
         virtual void draw();

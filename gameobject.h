@@ -9,6 +9,7 @@
 #include <glm/ext.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <memory>
 
 class GameObject{
 
@@ -17,7 +18,7 @@ class GameObject{
         float angle;
         glm::vec2 scale;
         glm::mat4 transform;
-        Shader shader;
+        std::shared_ptr<Shader> shader;
         unsigned int VAO;
         unsigned int VBO;
         float vertices[24] = { // vertex attributes for a unit quad that fills the entire screen in Normalized Device Coordinates.
@@ -32,7 +33,7 @@ class GameObject{
         };
         int layer;
 
-        GameObject(glm::vec2 pos, glm::vec2 scale, int layer, float angle, const Shader& shader);
+        GameObject(glm::vec2 pos, glm::vec2 scale, int layer, float angle, std::shared_ptr<Shader> shader);
         GameObject();
         virtual void update(float dt);
         virtual void draw();

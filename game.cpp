@@ -14,9 +14,12 @@ Game2D::~Game2D(){
 void Game2D::init(){
     //load
 
-    this->button = ColoredButton(
+    //NOTE: the new keyword generates a pointer, if the var is not a pointer(it has a *), dont use new
+    this->button = new ColoredButton(
         glm::vec2(200.0f, 200.0f), // position
         glm::vec3(1.0f, 0.0f, 0.0f), // color
+        glm::vec3(0.0f, 1.0f, 0.0f), // color
+        glm::vec3(0.0f, 0.0f, 1.0f), // color
         glm::vec2(100.0f, 100.0f), // scale
         0
     );
@@ -35,7 +38,14 @@ void Game2D::init(){
             glm::vec2(800.0f, 600.0f), // scale
             8
     ));
-    objects.push_back(&button);
+    objects.push_back(
+        new ColoredGameObject(
+            glm::vec2(500.0f, 500.0f), // position
+            glm::vec3(1.0, 0.0, 0.0),
+            glm::vec2(80.0f, 60.0f), // scale
+            0
+    ));
+    objects.push_back(button);
 }
 void Game2D::update(float dt){
     glm::mat4 view = glm::mat4(1.0f);
@@ -44,7 +54,7 @@ void Game2D::update(float dt){
     objects.at(0)->position = glm::vec2(width/2, height/2);
     objects.at(0)->angle += 50.0f * dt;
     
-    objects.at(1)->position = glm::vec2(800.0f, 0.0f);
+    objects.at(1)->position = glm::vec2(0.0f, 0.0f);
 
     for(GameObject* object : objects){
         object->setDebug(debug);
@@ -69,5 +79,6 @@ void Game2D::render(){
 void Game2D::processInputs(){
     debug = keys[GLFW_KEY_S];
     wireframe = keys[GLFW_KEY_W] || this->debug;
-    button.mousePos = mousePos;
+    button->mousePos = mousePos;
+    button->mousePressed = leftMouse;
 }

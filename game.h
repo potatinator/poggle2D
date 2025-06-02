@@ -10,8 +10,10 @@
 class Game2D{
     public:
         bool keys[1024];
+        bool leftMouse;
+        bool rightMouse;
         glm::vec2 mousePos;
-        Button button;
+        ColoredButton* button;
         unsigned int width, height;
         bool wireframe;
         bool debug;

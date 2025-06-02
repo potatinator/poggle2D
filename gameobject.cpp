@@ -2,7 +2,7 @@
 #include "gameobject.h"
 
 GameObject::GameObject(){}
-GameObject::GameObject(glm::vec2 pos, glm::vec2 scale, int layer, float angle, const Shader& shader)
+GameObject::GameObject(glm::vec2 pos, glm::vec2 scale, int layer, float angle, std::shared_ptr<Shader> shader)
     : position(pos), scale(scale), angle(angle), shader(shader), layer(layer) {
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -24,34 +24,34 @@ void GameObject::update(float dt){
 
 }
 void GameObject::draw() {
-    this->shader.use();
-    this->shader.setMat4("transform", this->transform);
-    this->shader.setInt("layer", -layer);
+    shader->use();
+    shader->setMat4("transform", this->transform);
+    shader->setInt("layer", -layer);
     glBindVertexArray(this->VAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);
 }
 void GameObject::setView(glm::mat4 view){
-    this->shader.use();
-    this->shader.setMat4("view", view);
+    shader->use();
+    shader->setMat4("view", view);
 }
 void GameObject::setDebug(bool debug){
-    this->shader.use();
-    this->shader.setBool("debug", debug);
+    shader->use();
+    shader->setBool("debug", debug);
 }
 
 TexturedGameObject::TexturedGameObject(glm::vec2 pos, Texture2D tex, glm::vec2 scale, int layer, float angle)
-    : GameObject(pos, scale, layer, angle, Shader("./shaders/main.vert", "./shaders/texture.frag")), texture(tex) {
+    : GameObject(pos, scale, layer, angle, std::make_shared<Shader>("./shaders/main.vert", "./shaders/texture.frag")), texture(tex) {
 
 }
 void TexturedGameObject::update(float dt){
     GameObject::update(dt);
 }
 void TexturedGameObject::draw(){
-    shader.use();
+    shader->use();
     glActiveTexture(GL_TEXTURE0);
     texture.Bind();
-    shader.setInt("tex", 0);
+    shader->setInt("tex", 0);
     GameObject::draw();
 }
 void TexturedGameObject::setView(glm::mat4 view){
@@ -59,15 +59,15 @@ void TexturedGameObject::setView(glm::mat4 view){
 }
 
 ColoredGameObject::ColoredGameObject(glm::vec2 pos, glm::vec3 col, glm::vec2 scale, int layer, float angle)
-    : GameObject(pos, scale, layer, angle, Shader("./shaders/main.vert", "./shaders/color.frag")), color(col) {
+    : GameObject(pos, scale, layer, angle, std::make_shared<Shader>("./shaders/main.vert", "./shaders/color.frag")), color(col) {
         
 }
 void ColoredGameObject::update(float dt){
     GameObject::update(dt);
 }
 void ColoredGameObject::draw(){
-    shader.use();
-    shader.setVec3("color", this->color);
+    shader->use();
+    shader->setVec3("color", this->color);
     GameObject::draw();
 }
 void ColoredGameObject::setView(glm::mat4 view){

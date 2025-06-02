@@ -29,6 +29,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode);
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
@@ -70,6 +71,7 @@ int main(void)
     glfwSetCursorPosCallback(window, mouse_callback);    
     glfwSetKeyCallback(window, key_callback);
     glfwSetScrollCallback(window, scroll_callback);
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
 
     // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -275,3 +277,21 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {}
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (action == GLFW_PRESS){
+        if(button == GLFW_MOUSE_BUTTON_LEFT){
+            game.leftMouse = true;
+        } else if(button == GLFW_MOUSE_BUTTON_RIGHT){
+            game.rightMouse = true;
+        }
+    } else {
+        if(button == GLFW_MOUSE_BUTTON_LEFT){
+            game.leftMouse = false;
+        } else if(button == GLFW_MOUSE_BUTTON_RIGHT){
+            game.rightMouse = false;
+        }
+    }
+        
+}
