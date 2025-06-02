@@ -14,12 +14,12 @@ Game2D::~Game2D(){
 void Game2D::init(){
     //load
 
-    this->button = Button(
-        glm::vec2(0.0f, 0.0f), // position
-        glm::vec2(800.0f, 600.0f), // scale
-        2,
-        0.0,
-        Shader("./shaders/main.vert","./shaders/color.frag"));
+    this->button = ColoredButton(
+        glm::vec2(200.0f, 200.0f), // position
+        glm::vec3(1.0f, 0.0f, 0.0f), // color
+        glm::vec2(100.0f, 100.0f), // scale
+        0
+    );
 
     objects.push_back(
         new TexturedGameObject(
@@ -33,7 +33,7 @@ void Game2D::init(){
             glm::vec2(0.0f, 0.0f), // position
             Texture2D("./resources/grid.png", true),
             glm::vec2(800.0f, 600.0f), // scale
-            1
+            8
     ));
     objects.push_back(&button);
 }
@@ -44,7 +44,7 @@ void Game2D::update(float dt){
     objects.at(0)->position = glm::vec2(width/2, height/2);
     objects.at(0)->angle += 50.0f * dt;
     
-    objects.at(1)->position = glm::vec2(0.0f, 0.0f);
+    objects.at(1)->position = glm::vec2(800.0f, 0.0f);
 
     for(GameObject* object : objects){
         object->setDebug(debug);
@@ -69,5 +69,5 @@ void Game2D::render(){
 void Game2D::processInputs(){
     debug = keys[GLFW_KEY_S];
     wireframe = keys[GLFW_KEY_W] || this->debug;
-    
+    button.mousePos = mousePos;
 }
