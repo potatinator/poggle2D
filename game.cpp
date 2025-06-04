@@ -23,6 +23,12 @@ void Game2D::init(){
         glm::vec2(100.0f, 100.0f), // scale
         0
     );
+    this->gun = new Gun(
+        glm::vec2(400.0f, 0.0f), // position
+        Texture2D("./resources/gun.png", true),
+        glm::vec2(100.0f, 100.0f), // scale
+        0
+    );
 
     objects.push_back(
         new TexturedGameObject(
@@ -46,6 +52,7 @@ void Game2D::init(){
             0
     ));
     objects.push_back(button);
+    objects.push_back(gun);
 }
 void Game2D::update(float dt){
     glm::mat4 view = glm::mat4(1.0f);
@@ -81,4 +88,5 @@ void Game2D::processInputs(){
     wireframe = keys[GLFW_KEY_W] || this->debug;
     button->mousePos = mousePos;
     button->mousePressed = leftMouse;
+    gun->mousePos = mousePos;
 }

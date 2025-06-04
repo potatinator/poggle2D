@@ -5,6 +5,7 @@
 #include <vector>
 #include "gameobject.h"
 #include "ui.h"
+#include "gun.h"
 
 
 class Game2D{
@@ -14,6 +15,7 @@ class Game2D{
         bool rightMouse;
         glm::vec2 mousePos;
         ColoredButton* button;
+        Gun* gun;
         unsigned int width, height;
         bool wireframe;
         bool debug;
