@@ -24,7 +24,7 @@ void Game2D::init(){
         0
     );
     this->gun = new Gun(
-        glm::vec2(400.0f, 0.0f), // position
+        glm::vec2(400.0f, -50.0f), // position
         Texture2D("./resources/gun.png", true),
         glm::vec2(100.0f, 100.0f), // scale
         0
