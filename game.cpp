@@ -29,6 +29,21 @@ void Game2D::init(){
         glm::vec2(100.0f, 100.0f), // scale
         0
     );
+    pegs.push_back(new Peg(
+        glm::vec2(530.0f, 200.0f)
+    ));
+    pegs.push_back(new Peg(
+        glm::vec2(560.0f, 200.0f)
+    ));
+    pegs.push_back(new Peg(
+        glm::vec2(590.0f, 200.0f)
+    ));
+    pegs.push_back(new Peg(
+        glm::vec2(610.0f, 200.0f)
+    ));
+    pegs.push_back(new Peg(
+        glm::vec2(640.0f, 200.0f)
+    ));
 
     objects.push_back(
         new TexturedGameObject(
@@ -53,6 +68,11 @@ void Game2D::init(){
     ));
     objects.push_back(button);
     objects.push_back(gun);
+    for(Peg* peg : pegs ){
+        objects.push_back(peg);
+    }
+    
+    
 }
 void Game2D::update(float dt){
     glm::mat4 view = glm::mat4(1.0f);
