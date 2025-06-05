@@ -7,15 +7,18 @@
 #include "ui.h"
 #include "gun.h"
 #include "peg.h"
-
+#include "save.h"
 
 class Game2D{
     public:
         bool keys[1024];
+        bool oldKeys[1024];
         bool leftMouse;
         bool rightMouse;
         glm::vec2 mousePos;
-        ColoredButton* button;
+        bool rightLast;
+        bool leftLast;
+        SaveMgr save;
         Gun* gun;
         bool lastpressed;
         unsigned int width, height;

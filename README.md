@@ -1,9 +1,9 @@
 # 2D engine
 ## build and run
 to build and run the program, run<br/>
-```g++ main.cpp shader.cpp gameobject.cpp texture.cpp game.cpp ui.cpp glad.c -o build/src/poggle2d -I./include -lglfw -lGL -lglm -lassimp && ./build/src/poggle2d  ```<br/>
+```g++ main.cpp shader.cpp gameobject.cpp texture.cpp game.cpp ui.cpp gun.cpp peg.cpp ball.cpp save.cpp glad.c -o build/src/poggle2d -I./include -lglfw -lGL -lglm -lassimp && ./build/src/poggle2d  ```<br/>
 or on windows:<br/>
-```g++ main.cpp shader.cpp gameobject.cpp texture.cpp game.cpp ui.cpp glad.c -o build/src/poggle2d.exe -I./include -L/ucrt64/lib -lopengl32 -lglfw3 -lgdi32 -lassimp; ./build/src/poggle2d.exe ```<br/>
+```g++ main.cpp shader.cpp gameobject.cpp texture.cpp game.cpp ui.cpp gun.cpp peg.cpp ball.cpp save.cpp glad.c -o build/src/poggle2d.exe -I./include -L/ucrt64/lib -lopengl32 -lglfw3 -lgdi32 -lassimp; ./build/src/poggle2d.exe ```<br/>
 this will compile to /build/src/2d, then run it. make sure the dir exists, the command is run from the 3d dir, and all includes are installed
 ## dependancies
  - glfw(mingw-w64-ucrt-x86_64-glfw)
