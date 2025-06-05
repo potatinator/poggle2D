@@ -78,6 +78,16 @@ void Game2D::update(float dt){
     glm::mat4 view = glm::mat4(1.0f);
     view = glm::ortho(0.0f, (float)width, (float)height, 0.0f, 0.0f, 10.0f);
 
+    if(rightMouse && !lastpressed){
+        pegs.push_back(new Peg(
+            mousePos
+        ));
+        objects.push_back(new Peg(
+            mousePos
+        ));
+    }
+    lastpressed = rightMouse;
+
     objects.at(0)->position = glm::vec2(width/2, height/2);
     objects.at(0)->angle += 50.0f * dt;
     

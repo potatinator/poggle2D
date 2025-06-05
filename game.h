@@ -17,6 +17,7 @@ class Game2D{
         glm::vec2 mousePos;
         ColoredButton* button;
         Gun* gun;
+        bool lastpressed;
         unsigned int width, height;
         bool wireframe;
         bool debug;
