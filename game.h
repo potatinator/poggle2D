@@ -8,6 +8,7 @@
 #include "gun.h"
 #include "peg.h"
 #include "save.h"
+#include "ball.h"
 
 class Game2D{
     public:
@@ -20,6 +21,7 @@ class Game2D{
         bool leftLast;
         SaveMgr save;
         Gun* gun;
+        Ball* ball;
         bool lastpressed;
         unsigned int width, height;
         bool wireframe;

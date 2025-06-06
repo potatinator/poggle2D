@@ -13,13 +13,20 @@ Game2D::~Game2D(){
 
 void Game2D::init(){
     //load
-
+    
+    this->ball = new Ball(
+        glm::vec2(400.0f, 300.0f),
+        glm::vec2(10.0f, 0.0f),
+        &pegs
+    );
     this->gun = new Gun(
         glm::vec2(400.0f, -50.0f), // position
         Texture2D("./resources/gun.png", true),
+        ball,
         glm::vec2(100.0f, 100.0f), // scale
         0
     );
+
     objects.push_back(
         new TexturedGameObject(
             glm::vec2(0.0f, 0.0f), // position
@@ -28,6 +35,7 @@ void Game2D::init(){
             8
     ));
     objects.push_back(gun);
+    objects.push_back(ball);
     
     pegs = save.load("save0.sav", pegs);
 }
@@ -48,6 +56,7 @@ void Game2D::update(float dt){
             object->update(dt);
         }
     }
+    ball->collide();
 }
 
 void Game2D::render(){
@@ -74,6 +83,9 @@ void Game2D::processInputs(){
     wireframe = keys[GLFW_KEY_W] || this->debug;
     gun->mousePos = mousePos;
 
+    if(leftMouse && ! leftLast){
+        gun->shoot();
+    }
 
     if(keys[GLFW_KEY_E] && !oldKeys[GLFW_KEY_E]){
         string s;

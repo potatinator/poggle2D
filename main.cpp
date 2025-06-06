@@ -48,7 +48,7 @@ int main(void)
     //glfwWindowHint(GLFW_SAMPLES, 4);
 
     /* Create a windowed mode window and its OpenGL contexts */
-    window = glfwCreateWindow(width, height, "2D UwU", NULL, NULL);
+    window = glfwCreateWindow(width, height, "2D asmoranomardicadaistinaculdacar", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
