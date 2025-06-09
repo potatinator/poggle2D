@@ -28,6 +28,7 @@ void Ball::collide(){
                     position += glm::vec2((20.0-glm::length(diff))) * glm::normalize(diff); //position resolution
                     velocity = velocity - glm::vec2(1.93) * glm::dot(velocity, glm::normalize(diff)) * glm::normalize(diff);
                     hits.push_back(i);
+                    pegs->at(i)->hit = true;
                 }  
             } 
         }
