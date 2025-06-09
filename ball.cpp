@@ -6,7 +6,7 @@ Ball::Ball(glm::vec2 pos, glm::vec2 vel, std::vector<Peg*>* pegs) : pegs(pegs), 
 void Ball::update(float dt){
     if(active){
         velocity += glm::vec2(0.0, 400.0)*dt;
-        velocity -= glm::vec2(0.2, 0.2)*dt;
+        velocity -= glm::vec2(2.0, 2.0)*dt;
         position += velocity*dt;
         if(position.y > 600){
             active = false;
@@ -26,7 +26,7 @@ void Ball::collide(){
                 glm::vec2 diff = position - pegs->at(i)->position;
                 if(glm::length(diff) <= scale.x/2.0+pegs->at(i)->scale.x/2.0){
                     position += glm::vec2((20.0-glm::length(diff))) * glm::normalize(diff); //position resolution
-                    velocity = velocity - glm::vec2(1.94) * glm::dot(velocity, glm::normalize(diff)) * glm::normalize(diff);
+                    velocity = velocity - glm::vec2(1.93) * glm::dot(velocity, glm::normalize(diff)) * glm::normalize(diff);
                     hits.push_back(i);
                 }  
             } 
