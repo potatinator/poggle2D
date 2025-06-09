@@ -26,16 +26,23 @@ void Game2D::init(){
         glm::vec2(100.0f, 100.0f), // scale
         0
     );
+    this->path = new Path(
+        glm::vec2(0.0f, 0.0f), // position
+        glm::vec3(1.0),//col
+        glm::vec2(width, height), // scale
+        7
+    );
 
     objects.push_back(
         new TexturedGameObject(
             glm::vec2(0.0f, 0.0f), // position
             Texture2D("./resources/grid.png", true),
-            glm::vec2(800.0f, 600.0f), // scale
+            glm::vec2(width, height), // scale
             8
     ));
     objects.push_back(gun);
     objects.push_back(ball);
+    objects.push_back(path);
     
     pegs = save.load("save0.sav", pegs);
 }
