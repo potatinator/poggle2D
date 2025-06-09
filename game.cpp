@@ -57,6 +57,29 @@ void Game2D::update(float dt){
         }
     }
     ball->collide();
+    bool win = true;
+    for(Peg* p : pegs){
+        if(p != nullptr){
+            win = false;
+            break;
+        }
+    }
+    if(win){
+        std::cout << "win" << std::endl;
+        pegs = save.load("save0.sav", pegs);
+        
+    }
+    win = true;
+    for(Peg* p : pegs){
+        if(p != nullptr){
+            win = false;
+            break;
+        }
+    }
+    if(win){
+        std::cout << "kill" << std::endl;
+        return;
+    }
 }
 
 void Game2D::render(){
