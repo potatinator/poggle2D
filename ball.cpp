@@ -5,8 +5,8 @@
 Ball::Ball(glm::vec2 pos, glm::vec2 vel, std::vector<Peg*>* pegs) : pegs(pegs), velocity(vel), active(false), TexturedGameObject(pos, Texture2D("./resources/ball1.png", true), glm::vec2(15.0f)) {};
 void Ball::update(float dt){
     if(active){
-        velocity += glm::vec2(0.0, 400.0)*dt;
-        velocity -= glm::vec2(2.0, 2.0)*dt;
+        velocity += glm::vec2(0.0, 500.0)*dt;
+        velocity -= glm::vec2(3.0, 3.0)*dt;
         position += velocity*dt;
         if(position.y > 600){
             active = false;
