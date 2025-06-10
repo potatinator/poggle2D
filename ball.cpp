@@ -6,7 +6,7 @@ Ball::Ball(glm::vec2 pos, glm::vec2 vel, std::vector<Peg*>* pegs) : pegs(pegs), 
 void Ball::update(float dt){
     if(active){
         velocity += glm::vec2(0.0, 500.0)*dt;
-        velocity -= glm::vec2(3.0, 3.0)*dt;
+
         position += velocity*dt;
         if(position.y > 600){
             active = false;
