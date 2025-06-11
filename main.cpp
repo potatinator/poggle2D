@@ -170,7 +170,7 @@ int main(void)
 // -----------------------------------------------------------------------
 //settings
 // -----------------------------------------------------------------------
-    // glEnable(GL_DEPTH_TEST);//depth
+    glEnable(GL_DEPTH_TEST);//depth
     glEnable(GL_BLEND);//translucency
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     // glEnable(GL_FRAMEBUFFER_SRGB); //gamma(gamma corrction is done is post so this is unused)
