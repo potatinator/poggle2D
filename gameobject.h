@@ -43,7 +43,8 @@ class GameObject{
 class TexturedGameObject : public GameObject {
     public:
         Texture2D texture;
-        TexturedGameObject(glm::vec2 pos, Texture2D tex, glm::vec2 scale=glm::vec2(1.0f, 1.0f), int layer=0, float angle=0.0f);
+        float exposure;
+        TexturedGameObject(glm::vec2 pos, Texture2D tex, glm::vec2 scale=glm::vec2(1.0f, 1.0f), int layer=0, float exposure = 1.0, float angle=0.0f);
         void update(float dt);
         void draw();
         void setView(glm::mat4 view);

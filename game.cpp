@@ -38,7 +38,8 @@ void Game2D::init(){
             glm::vec2(0.0f, 0.0f), // position
             Texture2D("./resources/background.jpg", false),
             glm::vec2(width, height), // scale
-            8
+            8,
+            0.5f
     ));
     objects.push_back(gun);
     objects.push_back(ball);

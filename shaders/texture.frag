@@ -6,7 +6,7 @@ in vec2 coords;
 
 uniform sampler2D tex;
 uniform bool debug;
-uniform bool hit;
+uniform float exposure = 1.0;
 
 void main()
 {
@@ -15,7 +15,6 @@ void main()
     } else {
         FragColor = texture(tex, coords);
     }
-    if(hit){
-        FragColor *= vec4(vec3(50), 1.0);
-    }
+    FragColor *= vec4(vec3(exposure), 1.0);
+
 }  

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <glm/glm.hpp>
 
-Gun::Gun(glm::vec2 pos, Texture2D tex, Ball* ball, glm::vec2 scale, int layer, float angle) : ball(ball), path(new Path(glm::vec2(0,0), glm::vec2(800,600), 7)), TexturedGameObject(pos, tex, scale, layer, angle){}
+Gun::Gun(glm::vec2 pos, Texture2D tex, Ball* ball, glm::vec2 scale, int layer, float angle) : ball(ball), path(new Path(glm::vec2(0,0), glm::vec2(800,600), 7)), TexturedGameObject(pos, tex, scale, layer, 1.0, angle){}
 
 void Gun::update(float dt){
     glm::vec2 diff = (position+scale*0.5f) - mousePos;

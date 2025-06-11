@@ -40,10 +40,8 @@ void GameObject::setDebug(bool debug){
     shader->use();
     shader->setBool("debug", debug);
 }
-
-TexturedGameObject::TexturedGameObject(glm::vec2 pos, Texture2D tex, glm::vec2 scale, int layer, float angle)
-    : GameObject(pos, scale, layer, angle, std::make_shared<Shader>("./shaders/main.vert", "./shaders/texture.frag")), texture(tex) {
-
+TexturedGameObject::TexturedGameObject(glm::vec2 pos, Texture2D tex, glm::vec2 scale, int layer, float exposure, float angle)
+    : GameObject(pos, scale, layer, angle, std::make_shared<Shader>("./shaders/main.vert", "./shaders/texture.frag")), exposure(exposure), texture(tex) {
 }
 void TexturedGameObject::update(float dt){
     GameObject::update(dt);
@@ -53,6 +51,7 @@ void TexturedGameObject::draw(){
     glActiveTexture(GL_TEXTURE0);
     texture.Bind();
     shader->setInt("tex", 0);
+    shader->setFloat("exposure", exposure);
     GameObject::draw();
 }
 void TexturedGameObject::setView(glm::mat4 view){

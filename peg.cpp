@@ -4,6 +4,6 @@ Peg::Peg(glm::vec2 pos) : TexturedGameObject(pos, Texture2D("./resources/ball2.p
 
 void Peg::draw(){
     shader->use();
-    shader->setBool("hit", hit);
+    exposure = hit ? 50 : 1;
     TexturedGameObject::draw();
 }
