@@ -8,7 +8,7 @@ void Gun::update(float dt){
     glm::vec2 diff = (position+scale*0.5f) - mousePos;
     angle = -glm::degrees(atan(diff.x/diff.y))+230;
 
-    path->pos = position + scale/glm::vec2(2.0);
+    path->pos = position + scale/glm::vec2(2.0) - ball->scale/glm::vec2(2.0);
     path->vel = glm::vec2(-500.0) * glm::normalize((position+scale*0.5f) - mousePos);
 
     TexturedGameObject::update(dt);

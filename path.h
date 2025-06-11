@@ -18,36 +18,36 @@ class Path : public GameObject {
         glm::vec2 vel;
         glm::vec2 pos;
 
-        float vertices[12*7] = { // vertex attributes for a unit quad that fills the entire screen in Normalized Device Coordinates.
-            // positions   // texCoords
-            0.0f, 0.0f, 0.0f, 1.0f,
-            0.1f, 0.0f, 1.0f, 0.0f,
-            0.2f, 0.0f, 0.0f, 0.0f,
+        // float vertices[12*7] = { // vertex attributes for a unit quad that fills the entire screen in Normalized Device Coordinates.
+        //     // positions   // texCoords
+        //     0.0f, 0.0f, 0.0f, 1.0f,
+        //     0.1f, 0.0f, 1.0f, 0.0f,
+        //     0.2f, 0.0f, 0.0f, 0.0f,
 
-            0.2f, 0.0f, 0.0f, 1.0f,
-            0.3f, 0.0f, 1.0f, 1.0f,
-            0.35f, 0.0f, 1.0f, 0.0f,
+        //     0.2f, 0.0f, 0.0f, 1.0f,
+        //     0.3f, 0.0f, 1.0f, 1.0f,
+        //     0.35f, 0.0f, 1.0f, 0.0f,
 
-            0.35f, 0.0f, 0.0f, 1.0f,
-            0.4f, 0.0f, 1.0f, 1.0f,
-            0.45f, 0.0f, 1.0f, 0.0f,
+        //     0.35f, 0.0f, 0.0f, 1.0f,
+        //     0.4f, 0.0f, 1.0f, 1.0f,
+        //     0.45f, 0.0f, 1.0f, 0.0f,
             
-            0.45f, 0.0f, 1.0f, 0.0f,
-            0.5f, 0.0f, 1.0f, 0.0f,
-            0.55f, 0.0f, 1.0f, 0.0f,
+        //     0.45f, 0.0f, 1.0f, 0.0f,
+        //     0.5f, 0.0f, 1.0f, 0.0f,
+        //     0.55f, 0.0f, 1.0f, 0.0f,
             
-            0.55f, 0.0f, 1.0f, 0.0f,
-            0.6f, 0.0f, 1.0f, 0.0f,
-            0.65f, 0.0f, 1.0f, 0.0f,
+        //     0.55f, 0.0f, 1.0f, 0.0f,
+        //     0.6f, 0.0f, 1.0f, 0.0f,
+        //     0.65f, 0.0f, 1.0f, 0.0f,
             
-            0.65f, 0.0f, 0.0f, 1.0f,
-            0.7f, 0.0f, 1.0f, 1.0f,
-            0.8f, 0.0f, 1.0f, 0.0f,
+        //     0.65f, 0.0f, 0.0f, 1.0f,
+        //     0.7f, 0.0f, 1.0f, 1.0f,
+        //     0.8f, 0.0f, 1.0f, 0.0f,
 
-            0.8f, 0.0f, 0.0f, 1.0f,
-            0.9f, 0.0f, 1.0f, 1.0f,
-            1.0f, 0.0f, 1.0f, 0.0f
-        };
+        //     0.8f, 0.0f, 0.0f, 1.0f,
+        //     0.9f, 0.0f, 1.0f, 1.0f,
+        //     1.0f, 0.0f, 1.0f, 0.0f
+        // };
 
         Path(glm::vec2 pos, glm::vec2 scale=glm::vec2(1.0f, 1.0f), int layer=0);
         void update(float dt);
