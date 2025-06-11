@@ -6,7 +6,7 @@ Gun::Gun(glm::vec2 pos, Texture2D tex, Ball* ball, glm::vec2 scale, int layer, f
 
 void Gun::update(float dt){
     glm::vec2 diff = (position+scale*0.5f) - mousePos;
-    angle = -glm::degrees(atan(diff.x/diff.y))+90;
+    angle = -glm::degrees(atan(diff.x/diff.y))+230;
 
     path->pos = position + scale/glm::vec2(2.0);
     path->vel = glm::vec2(-500.0) * glm::normalize((position+scale*0.5f) - mousePos);

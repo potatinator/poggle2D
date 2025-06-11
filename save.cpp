@@ -11,6 +11,7 @@ std::vector<Peg*> SaveMgr::load(string fileName, std::vector<Peg*> in){
     string name = "./saves/"+fileName;
     if(!filesystem::exists(name)){
         cout << "couldnt find file";
+        exit(0);
         return in;
     }
     ifstream f(name);

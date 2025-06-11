@@ -36,7 +36,7 @@ void Game2D::init(){
     objects.push_back(
         new TexturedGameObject(
             glm::vec2(0.0f, 0.0f), // position
-            Texture2D("./resources/grid.png", true),
+            Texture2D("./resources/background.jpg", false),
             glm::vec2(width, height), // scale
             8
     ));
@@ -44,7 +44,7 @@ void Game2D::init(){
     objects.push_back(ball);
     // objects.push_back(path);
     
-    pegs = save.load("save1.sav", pegs);
+    pegs = save.load("save0.sav", pegs);
 }
 void Game2D::update(float dt){
     glm::mat4 view = glm::mat4(1.0f);
@@ -73,7 +73,9 @@ void Game2D::update(float dt){
     }
     if(win){
         std::cout << "win" << std::endl;
-        pegs = save.load("save0.sav", pegs);
+        lvl++;
+        pegs = save.load("save" + std::to_string(lvl) +".sav", pegs);
+
         
     }
     win = true;

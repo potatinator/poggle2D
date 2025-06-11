@@ -13,6 +13,7 @@
 
 class Game2D{
     public:
+        int lvl = 0;
         bool keys[1024];
         bool oldKeys[1024];
         bool leftMouse;
