@@ -2,7 +2,7 @@
 
 
 Path::Path(glm::vec2 pos, glm::vec2 scale, int layer)
-    : GameObject(pos, scale, layer, angle, std::make_shared<Shader>("./shaders/path.vert", "./shaders/path.frag")), vel(0.01, 0), pos(0, 0) {
+    : GameObject(pos, scale, layer, angle, std::make_shared<Shader>("./shaders/main.vert", "./shaders/pathOld.frag")), vel(0.01, 0), pos(0, 0) {
 
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
