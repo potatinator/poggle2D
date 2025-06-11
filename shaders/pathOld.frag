@@ -23,7 +23,7 @@ void main() {
     int search = 10;
     float minDist = 1000;
 
-    float diff = mix(0.05, 1.0, abs(screenPos.x - u_x0.x)/800.0);
+    float diff = mix(0.01, 1.0, abs(screenPos.x - u_x0.x)/400.0);
     for (float dx = -search; dx <= search; dx += diff) {
         float x = screenPos.x + dx;
         float y = positionAtTime(x, u_x0, u_v0, u_g);
