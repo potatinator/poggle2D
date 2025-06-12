@@ -27,13 +27,22 @@ std::vector<Peg*> SaveMgr::load(string fileName, std::vector<Peg*> in){
         while(getline(stream, out, ' ')){
             parts.push_back(out);
         }
-        if(parts.size() >= 2){
+        if(parts.size() == 2){
             genPegs.push_back(
                 new Peg(
                     glm::vec2(
                         stof(parts.at(0)), 
                         stof(parts.at(1))
                     )
+                )
+            );
+        } else if(parts.size() == 3){
+            genPegs.push_back(
+                new Peg(
+                    glm::vec2(
+                        stof(parts.at(0)), 
+                        stof(parts.at(1))
+                    ), stof(parts.at(2))==1
                 )
             );
         }

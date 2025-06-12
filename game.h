@@ -10,6 +10,7 @@
 #include "save.h"
 #include "ball.h"
 #include "path.h"
+#include "text.h"
 
 class Game2D{
     public:
@@ -23,6 +24,7 @@ class Game2D{
         bool leftLast;
         SaveMgr save;
         Gun* gun;
+        TextRenderer* text;
         Ball* ball;
         Path* path;
         bool lastpressed;

@@ -13,6 +13,8 @@ Game2D::~Game2D(){
 
 void Game2D::init(){
     //load
+    this->text = new TextRenderer(width, height);
+    this->text->Load("./resources/font.ttf", 24);
     
     this->ball = new Ball(
         glm::vec2(400.0f, 300.0f),
@@ -45,11 +47,12 @@ void Game2D::init(){
     objects.push_back(ball);
     // objects.push_back(path);
     
-    pegs = save.load("save2.sav", pegs);
+    pegs = save.load("save0.sav", pegs);
 }
 void Game2D::update(float dt){
     glm::mat4 view = glm::mat4(1.0f);
     view = glm::ortho(0.0f, (float)width, (float)height, 0.0f, 0.0f, 10.0f);
+
 
     for(GameObject* object : objects){
         object->setDebug(debug);
@@ -67,7 +70,7 @@ void Game2D::update(float dt){
     ball->collide();
     bool win = true;
     for(Peg* p : pegs){
-        if(p != nullptr){
+        if(p != nullptr && p->isOrange()){
             win = false;
             break;
         }
@@ -109,6 +112,8 @@ void Game2D::render(){
             object->draw();
         }
     }
+
+    text->RenderText("test", 5.0f, 5.0f, 1.0f);
 }
 
 void Game2D::processInputs(){

@@ -1,1 +1,1 @@
-g++ main.cpp shader.cpp gameobject.cpp texture.cpp game.cpp ui.cpp save.cpp peg.cpp gun.cpp ball.cpp path.cpp glad.c -o build/src/poggle2d -I./include -lglfw -lGL -lglm -lassimp && ./build/src/poggle2d 
+g++ main.cpp shader.cpp gameobject.cpp texture.cpp game.cpp ui.cpp save.cpp peg.cpp gun.cpp ball.cpp path.cpp text.cpp glad.c -o build/src/poggle2d -I./include -lglfw -lGL -lglm -lassimp -lfreetype && ./build/src/poggle2d 
