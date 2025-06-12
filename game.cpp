@@ -74,7 +74,7 @@ void Game2D::update(float dt){
         }
     }
     if(win){
-        std::cout << "win" << std::endl;
+        std::cout << "win lvl: " << lvl << " in: " << 15-gun->count << " balls"<< std::endl;
         lvl++;
         pegs = save.load("save" + std::to_string(lvl) +".sav", pegs);
         gun->count = 15;

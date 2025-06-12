@@ -36,7 +36,7 @@ std::vector<Peg*> SaveMgr::load(string fileName, std::vector<Peg*> in){
                     glm::vec2(
                         stof(parts.at(0)), 
                         stof(parts.at(1))
-                    ), rand()%101<=17
+                    ), rand()%101<=20
                 )
             );
         } else if(parts.size() >= 3){
