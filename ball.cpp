@@ -2,7 +2,7 @@
 #include "texture.h"
 #include <iostream>
 
-Ball::Ball(glm::vec2 pos, glm::vec2 vel, std::vector<Peg*>* pegs) : pegs(pegs), velocity(vel), active(false), TexturedGameObject(pos, Texture2D("./resources/ball1.png", true), glm::vec2(15.0f)) {};
+Ball::Ball(glm::vec2 pos, glm::vec2 vel, std::vector<Peg*>* pegs) : pegs(pegs), velocity(vel), active(false), TexturedGameObject(pos, Texture2D("./resources/ball1.png", true), glm::vec2(15.0f), 2) {};
 void Ball::update(float dt){
     if(active){
         velocity += glm::vec2(0.0, 500.0)*dt;
@@ -14,6 +14,9 @@ void Ball::update(float dt){
                 pegs->at(h) = nullptr;
             }
             hits.clear();
+            if(position.x+scale.x > freeZone->position.x && position.x < freeZone->position.x+freeZone->scale.x){
+                free = true;
+            }
         }
         TexturedGameObject::update(dt);
     }

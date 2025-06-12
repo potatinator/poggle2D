@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include "game.h"
 #include "ui.h"
+#include "freezone.h"
 
 Game2D::Game2D(unsigned int width, unsigned int height) : width(width), height(height), keys(), mousePos(0.0, 0.0), wireframe(false), debug(false){}
 
@@ -28,12 +29,8 @@ void Game2D::init(){
         glm::vec2(100.0f, 100.0f), // scale
         0
     );
-    // this->path = new Path(
-    //     glm::vec2(0.0f, 0.0f), // position
-    //     glm::vec3(1.0),//col
-    //     glm::vec2(width, height), // scale
-    //     7
-    // );
+    this->freezone = new Freezone();
+    ball->freeZone = freezone;
 
     objects.push_back(
         new TexturedGameObject(
@@ -45,6 +42,7 @@ void Game2D::init(){
     ));
     objects.push_back(gun);
     objects.push_back(ball);
+    objects.push_back(freezone);
     // objects.push_back(path);
     
     pegs = save.load("save0.sav", pegs);
@@ -79,7 +77,7 @@ void Game2D::update(float dt){
         std::cout << "win" << std::endl;
         lvl++;
         pegs = save.load("save" + std::to_string(lvl) +".sav", pegs);
-
+        gun->count = 15;
         
     }
     win = true;
@@ -113,7 +111,7 @@ void Game2D::render(){
         }
     }
 
-    text->RenderText("Balls: " + to_string(gun->count), 5.0f, 5.0f, 1.0f);
+    text->RenderText("Balls: " + to_string(gun->count) + (ball->free ? "(free)" : ""), 5.0f, 5.0f, 1.0f);
 }
 
 void Game2D::processInputs(){
