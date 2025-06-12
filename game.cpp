@@ -113,7 +113,7 @@ void Game2D::render(){
         }
     }
 
-    text->RenderText("test", 5.0f, 5.0f, 1.0f);
+    text->RenderText("Balls: " + to_string(gun->count), 5.0f, 5.0f, 1.0f);
 }
 
 void Game2D::processInputs(){

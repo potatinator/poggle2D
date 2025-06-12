@@ -21,7 +21,7 @@ void Gun::draw(){
 void Gun::shoot(){
     if(!ball->active){
         ball->active = true;
-        count++;
+        count--;
         ball->position = position + scale/glm::vec2(2.0);
         ball->velocity = glm::vec2(-500.0) * glm::normalize((position+scale*0.5f) - mousePos);
     }
