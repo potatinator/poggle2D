@@ -6,16 +6,18 @@ using namespace std;
 
 void save(vector<glm::vec2> pegs);
 void save(string name, vector<glm::vec2> pegs);
-
+float f(float x){
+    return (-1.0*(abs(x-400))+200);
+}
 int main(){
     vector<glm::vec2> pegs;
 
     int p = 20;
     float len = 800/p;
 
-    for(int j=0; j<2; j++){
+    for(int j=0; j<5; j++){
     for(int i=-1; i<p; i++){
-        pegs.push_back(glm::vec2(i*len+(j*5), (400-(50*j))+(40*(1/cos((i*len+(j*5))*0.05)))));
+        pegs.push_back(glm::vec2(i*len+(0*5), (400-(50*j))+(f(i*len+(0*5)))));
     }
     }
     for(int i=0; i<pegs.size(); i++){
