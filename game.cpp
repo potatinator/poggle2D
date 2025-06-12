@@ -45,7 +45,7 @@ void Game2D::init(){
     objects.push_back(ball);
     // objects.push_back(path);
     
-    pegs = save.load("save0.sav", pegs);
+    pegs = save.load("save2.sav", pegs);
 }
 void Game2D::update(float dt){
     glm::mat4 view = glm::mat4(1.0f);
