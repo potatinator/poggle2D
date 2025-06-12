@@ -3,7 +3,7 @@
 
 #include "gameobject.h"
 #include "peg.h"
-#include "freezone.h"
+#include "bucket.h"
 #include <glm/glm.hpp>
 #include <vector>
 
@@ -12,7 +12,7 @@ class Ball : public TexturedGameObject{
         glm::vec2 velocity;
         bool active;
         bool free;
-        Freezone* freeZone;
+        Bucket* bucket;
         std::vector<int> hits;
         std::vector<Peg*>* pegs;
         Ball(glm::vec2 pos, glm::vec2 vel, std::vector<Peg*>* pegs);

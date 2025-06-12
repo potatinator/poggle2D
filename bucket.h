@@ -1,15 +1,15 @@
-#ifndef FREEZONE_H
-#define FREEZONE_H
+#ifndef BUCKET_H
+#define BUCKET_H
 
 #include "gameobject.h"
 #include <glm/glm.hpp>
 #include <vector>
 
-class Freezone : public TexturedGameObject{
+class Bucket : public TexturedGameObject{
     public:
         glm::vec2 velocity;
 
-        Freezone();
+        Bucket();
         void update(float dt);
 };
 

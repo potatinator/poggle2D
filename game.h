@@ -11,7 +11,7 @@
 #include "ball.h"
 #include "path.h"
 #include "text.h"
-#include "freezone.h"
+#include "bucket.h"
 
 class Game2D{
     public:
@@ -27,7 +27,7 @@ class Game2D{
         Gun* gun;
         TextRenderer* text;
         Ball* ball;
-        Freezone* freezone;
+        Bucket* bucket;
         Path* path;
         bool lastpressed;
         unsigned int width, height;

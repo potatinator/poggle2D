@@ -14,7 +14,7 @@ void Ball::update(float dt){
                 pegs->at(h) = nullptr;
             }
             hits.clear();
-            if(position.x+scale.x > freeZone->position.x && position.x < freeZone->position.x+freeZone->scale.x){
+            if(position.x+scale.x > bucket->position.x && position.x < bucket->position.x+bucket->scale.x){
                 free = true;
             }
         }

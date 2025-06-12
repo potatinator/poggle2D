@@ -2,6 +2,8 @@
 #include <fstream>
 #include <bits/stdc++.h>
 #include <glm/glm.hpp>
+#include <cstdlib>
+#include <ctime>
 #include "save.h"
 using namespace std;
 
@@ -21,6 +23,7 @@ std::vector<Peg*> SaveMgr::load(string fileName, std::vector<Peg*> in){
 
     vector<Peg*> genPegs;
 
+    srand(time(0));
     while(getline(f, line)){
         stringstream stream(line);
         vector<string> parts;
@@ -33,10 +36,10 @@ std::vector<Peg*> SaveMgr::load(string fileName, std::vector<Peg*> in){
                     glm::vec2(
                         stof(parts.at(0)), 
                         stof(parts.at(1))
-                    )
+                    ), rand()%101<=17
                 )
             );
-        } else if(parts.size() == 3){
+        } else if(parts.size() >= 3){
             genPegs.push_back(
                 new Peg(
                     glm::vec2(

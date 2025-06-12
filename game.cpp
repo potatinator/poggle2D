@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 #include "game.h"
 #include "ui.h"
-#include "freezone.h"
+#include "bucket.h"
 
 Game2D::Game2D(unsigned int width, unsigned int height) : width(width), height(height), keys(), mousePos(0.0, 0.0), wireframe(false), debug(false){}
 
@@ -29,8 +29,8 @@ void Game2D::init(){
         glm::vec2(100.0f, 100.0f), // scale
         0
     );
-    this->freezone = new Freezone();
-    ball->freeZone = freezone;
+    this->bucket = new Bucket();
+    ball->bucket = bucket;
 
     objects.push_back(
         new TexturedGameObject(
@@ -42,7 +42,7 @@ void Game2D::init(){
     ));
     objects.push_back(gun);
     objects.push_back(ball);
-    objects.push_back(freezone);
+    objects.push_back(bucket);
     // objects.push_back(path);
     
     pegs = save.load("save0.sav", pegs);

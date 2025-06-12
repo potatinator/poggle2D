@@ -7,7 +7,7 @@ using namespace std;
 void save(vector<glm::vec2> pegs);
 void save(string name, vector<glm::vec2> pegs);
 float f(float x){
-    return (-1.0*(abs(x-400))+200);
+    return 0.25*(x - 400)*cos(0.02*x);
 }
 int main(){
     vector<glm::vec2> pegs;
