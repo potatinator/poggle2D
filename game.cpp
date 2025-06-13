@@ -32,6 +32,11 @@ void Game2D::init(){
     this->bucket = new Bucket();
     ball->bucket = bucket;
 
+    this->credit = new Credit("credits.txt");
+    credit->init();
+
+    credits = true;
+
     objects.push_back(
         new TexturedGameObject(
             glm::vec2(0.0f, 0.0f), // position
@@ -51,7 +56,7 @@ void Game2D::update(float dt){
     glm::mat4 view = glm::mat4(1.0f);
     view = glm::ortho(0.0f, (float)width, (float)height, 0.0f, 0.0f, 10.0f);
 
-
+    if(!credits){
     for(GameObject* object : objects){
         object->setDebug(debug);
         object->setView(view);
@@ -80,16 +85,9 @@ void Game2D::update(float dt){
         gun->count = 15;
         
     }
-    win = true;
-    for(Peg* p : pegs){
-        if(p != nullptr){
-            win = false;
-            break;
-        }
-    }
-    if(win){
-        std::cout << "kill" << std::endl;
-        return;
+    } else {
+        credit->setView(view);
+        credit->update(dt);
     }
 }
 
@@ -100,6 +98,9 @@ void Game2D::render(){
     if(wireframe){
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
+
+
+    if(!credits){
 
     for(GameObject* object : objects){
         object->draw();
@@ -112,12 +113,18 @@ void Game2D::render(){
     }
 
     text->RenderText("Balls: " + to_string(gun->count) + (ball->free ? "(free)" : ""), 5.0f, 5.0f, 1.0f);
+    } else {
+        credit->draw();
+    }
 }
 
 void Game2D::processInputs(){
     debug = keys[GLFW_KEY_S];
     wireframe = keys[GLFW_KEY_W] || this->debug;
     gun->mousePos = mousePos;
+
+
+    if(!credits){
 
     if(leftMouse && ! leftLast){
         gun->shoot();
@@ -129,7 +136,7 @@ void Game2D::processInputs(){
         cin >> s;
         pegs = save.load(s, pegs);
     }
-
+}
     rightLast = rightMouse;
     leftLast = leftMouse;
     for(int i=0; i<sizeof(keys)/sizeof(bool); i++){

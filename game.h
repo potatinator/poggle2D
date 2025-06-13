@@ -12,6 +12,7 @@
 #include "path.h"
 #include "text.h"
 #include "bucket.h"
+#include "credit.h"
 
 class Game2D{
     public:
@@ -33,6 +34,8 @@ class Game2D{
         unsigned int width, height;
         bool wireframe;
         bool debug;
+        bool credits = false;
+        Credit* credit;
         std::vector<GameObject*> objects;
         std::vector<Peg*> pegs;        
         Game2D(unsigned int width, unsigned int height);
