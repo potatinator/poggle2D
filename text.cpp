@@ -89,54 +89,235 @@ void TextRenderer::Load(std::string font, unsigned int fontSize)
 
 void TextRenderer::RenderText(std::string text, float x, float y, float scale, glm::vec3 color)
 {
-    // activate corresponding render state	
     this->TextShader.use();
     this->TextShader.setVec3("textColor", color);
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(this->VAO);
 
-    // iterate through all characters
-    float origX = x; // Save the starting x position
-    // float baselineY = y + this->Characters['H'].Bearing.y * scale;
+    // Get ascent from reference character (e.g. 'H')
+    float ascent = this->Characters['H'].Bearing.y * scale;
+    float lineHeight = this->Characters['H'].Size.y * scale * 2.0f;
 
+    std::istringstream stream(text);
+    std::string line;
+    float lineY = y + ascent;
 
-    for (std::string::const_iterator c = text.begin(); c != text.end(); c++)
-    {
-        if (*c == '\n') {
-            y += this->Characters['H'].Size.y * scale * 1.5f; // Move to next line
-            // baselineY = y + this->Characters['H'].Bearing.y * scale;
-            x = origX; // Reset x to original start of line
-            continue;
+    while (std::getline(stream, line)) {
+        // Measure the width of the current line
+        float lineWidth = 0.0f;
+        for (char c : line) {
+            Character ch = Characters[c];
+            lineWidth += ch.Advance * scale;
         }
-    
-        Character ch = Characters[*c];
-    
-        float xpos = x + ch.Bearing.x * scale;
-        float ypos = y + (this->Characters['H'].Bearing.y - ch.Bearing.y) * scale;
-        // float ypos = baselineY - (ch.Bearing.y - ch.Size.y) * scale;
 
-        float w = ch.Size.x * scale;
-        float h = ch.Size.y * scale;
-    
-        float vertices[6][4] = {
-            { xpos,     ypos + h,   0.0f, 1.0f },
-            { xpos + w, ypos,       1.0f, 0.0f },
-            { xpos,     ypos,       0.0f, 0.0f },
-    
-            { xpos,     ypos + h,   0.0f, 1.0f },
-            { xpos + w, ypos + h,   1.0f, 1.0f },
-            { xpos + w, ypos,       1.0f, 0.0f }
-        };
-    
-        glBindTexture(GL_TEXTURE_2D, ch.TextureID);
-        glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-    
-        x += ch.Advance * scale;
+        float lineX = x; // Center this line horizontally
+
+        for (char c : line) {
+            Character ch = Characters[c];
+
+            float xpos = lineX + ch.Bearing.x * scale;
+            // float ypos = lineY - (ch.Bearing.y - ch.Size.y) * scale;
+            float ypos = lineY + (this->Characters['H'].Bearing.y - ch.Bearing.y) * scale;
+
+            float w = ch.Size.x * scale;
+            float h = ch.Size.y * scale;
+
+            float vertices[6][4] = {
+                { xpos,     ypos + h,   0.0f, 1.0f },
+                { xpos + w, ypos,       1.0f, 0.0f },
+                { xpos,     ypos,       0.0f, 0.0f },
+
+                { xpos,     ypos + h,   0.0f, 1.0f },
+                { xpos + w, ypos + h,   1.0f, 1.0f },
+                { xpos + w, ypos,       1.0f, 0.0f }
+            };
+
+            glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+            glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
+            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+
+            lineX += ch.Advance * scale;
+        }
+
+        lineY += lineHeight;
     }
+
+    glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+// void TextRenderer::RenderText(std::string text, float x, float y, float scale, glm::vec3 color)
+// {
+//     // activate corresponding render state	
+//     this->TextShader.use();
+//     this->TextShader.setVec3("textColor", color);
+//     glActiveTexture(GL_TEXTURE0);
+//     glBindVertexArray(this->VAO);
+
+//     float startX = x;
+
+//     for (std::string::const_iterator c = text.begin(); c != text.end(); c++)
+//     {
+//         if (*c == '\n') {
+//             y += this->Characters['H'].Size.y * scale * 1.5f; // Move to next line
+//             for (std::string::const_iterator c = text.begin(); c != text.end() && *c != '\n'; c++) {
+//                 Character ch = Characters[*c];
+//             }
+//             x = startX;
+//             continue;
+//         }
     
+//         Character ch = Characters[*c];
+    
+//         float xpos = x + ch.Bearing.x * scale;
+//         float ypos = y + (this->Characters['H'].Bearing.y - ch.Bearing.y) * scale;
+//         // float ypos = baselineY - (ch.Bearing.y - ch.Size.y) * scale;
+
+//         float w = ch.Size.x * scale;
+//         float h = ch.Size.y * scale;
+    
+//         float vertices[6][4] = {
+//             { xpos,     ypos + h,   0.0f, 1.0f },
+//             { xpos + w, ypos,       1.0f, 0.0f },
+//             { xpos,     ypos,       0.0f, 0.0f },
+    
+//             { xpos,     ypos + h,   0.0f, 1.0f },
+//             { xpos + w, ypos + h,   1.0f, 1.0f },
+//             { xpos + w, ypos,       1.0f, 0.0f }
+//         };
+    
+//         glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+//         glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
+//         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+//         glBindBuffer(GL_ARRAY_BUFFER, 0);
+//         glDrawArrays(GL_TRIANGLES, 0, 6);
+    
+//         x += ch.Advance * scale;
+//     }
+    
+//     glBindVertexArray(0);
+//     glBindTexture(GL_TEXTURE_2D, 0);
+// }
+void TextRenderer::RenderTextCentered(std::string text, float x, float y, float scale, glm::vec3 color)
+{
+    this->TextShader.use();
+    this->TextShader.setVec3("textColor", color);
+    glActiveTexture(GL_TEXTURE0);
+    glBindVertexArray(this->VAO);
+
+    // Get ascent from reference character (e.g. 'H')
+    float ascent = this->Characters['H'].Bearing.y * scale;
+    float lineHeight = this->Characters['H'].Size.y * scale * 2.0f;
+
+    std::istringstream stream(text);
+    std::string line;
+    float lineY = y + ascent;
+
+    while (std::getline(stream, line)) {
+        // Measure the width of the current line
+        float lineWidth = 0.0f;
+        for (char c : line) {
+            Character ch = Characters[c];
+            lineWidth += ch.Advance * scale;
+        }
+
+        float lineX = x - lineWidth / 2.0f; // Center this line horizontally
+
+        for (char c : line) {
+            Character ch = Characters[c];
+
+            float xpos = lineX + ch.Bearing.x * scale;
+            // float ypos = lineY - (ch.Bearing.y - ch.Size.y) * scale;
+            float ypos = lineY + (this->Characters['H'].Bearing.y - ch.Bearing.y) * scale;
+
+            float w = ch.Size.x * scale;
+            float h = ch.Size.y * scale;
+
+            float vertices[6][4] = {
+                { xpos,     ypos + h,   0.0f, 1.0f },
+                { xpos + w, ypos,       1.0f, 0.0f },
+                { xpos,     ypos,       0.0f, 0.0f },
+
+                { xpos,     ypos + h,   0.0f, 1.0f },
+                { xpos + w, ypos + h,   1.0f, 1.0f },
+                { xpos + w, ypos,       1.0f, 0.0f }
+            };
+
+            glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+            glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
+            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+
+            lineX += ch.Advance * scale;
+        }
+
+        lineY += lineHeight;
+    }
+
+    glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void TextRenderer::RenderTextRight(std::string text, float x, float y, float scale, glm::vec3 color)
+{
+    this->TextShader.use();
+    this->TextShader.setVec3("textColor", color);
+    glActiveTexture(GL_TEXTURE0);
+    glBindVertexArray(this->VAO);
+
+    // Get ascent from reference character (e.g. 'H')
+    float ascent = this->Characters['H'].Bearing.y * scale;
+    float lineHeight = this->Characters['H'].Size.y * scale * 2.0f;
+
+    std::istringstream stream(text);
+    std::string line;
+    float lineY = y + ascent;
+
+    while (std::getline(stream, line)) {
+        // Measure the width of the current line
+        float lineWidth = 0.0f;
+        for (char c : line) {
+            Character ch = Characters[c];
+            lineWidth += ch.Advance * scale;
+        }
+
+        float lineX = x - lineWidth; // Center this line horizontally
+
+        for (char c : line) {
+            Character ch = Characters[c];
+
+            float xpos = lineX + ch.Bearing.x * scale;
+            // float ypos = lineY - (ch.Bearing.y - ch.Size.y) * scale;
+            float ypos = lineY + (this->Characters['H'].Bearing.y - ch.Bearing.y) * scale;
+
+            float w = ch.Size.x * scale;
+            float h = ch.Size.y * scale;
+
+            float vertices[6][4] = {
+                { xpos,     ypos + h,   0.0f, 1.0f },
+                { xpos + w, ypos,       1.0f, 0.0f },
+                { xpos,     ypos,       0.0f, 0.0f },
+
+                { xpos,     ypos + h,   0.0f, 1.0f },
+                { xpos + w, ypos + h,   1.0f, 1.0f },
+                { xpos + w, ypos,       1.0f, 0.0f }
+            };
+
+            glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+            glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
+            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+
+            lineX += ch.Advance * scale;
+        }
+
+        lineY += lineHeight;
+    }
+
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
 }

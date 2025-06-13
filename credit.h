@@ -11,9 +11,13 @@ class Credit{
         std::ifstream file;
         int line;
         TextRenderer text;
+        TextRenderer text2;
         float speed = 25.0f;
-        float pos = 500.0f;
+        float pos = 0.0f;
+        bool running = false;
         std::string out;
+        std::string outn;
+        std::string outc;
         Credit(std::string fileName);
         void init();
         void start();

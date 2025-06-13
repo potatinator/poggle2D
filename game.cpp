@@ -36,6 +36,7 @@ void Game2D::init(){
     credit->init();
 
     credits = true;
+    credit->start();
 
     objects.push_back(
         new TexturedGameObject(
@@ -81,9 +82,13 @@ void Game2D::update(float dt){
     if(win){
         std::cout << "win lvl: " << lvl << " in: " << 15-gun->count << " balls"<< std::endl;
         lvl++;
+        if(lvl >= 4){
+            credits = true;
+            credit->start();
+        } else {
         pegs = save.load("save" + std::to_string(lvl) +".sav", pegs);
         gun->count = 15;
-        
+        }
     }
     } else {
         credit->setView(view);
