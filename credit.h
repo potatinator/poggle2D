@@ -12,7 +12,8 @@ class Credit{
         int line;
         TextRenderer text;
         float speed = 25.0f;
-        float pos = 500.0f;
+        float pos = 0.0f;
+        bool running = false;
         std::string out;
         Credit(std::string fileName);
         void init();
