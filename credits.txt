@@ -1,3 +1,25 @@
     CREDITS
 
 game idea: idean
+game engine: evan
+game art: julien (internet)
+ball physics: evan
+peg array: evan 
+version control: github
+level incrementer: julien
+peggle comparisons: evan, idean
+emotional support: idean
+knows how to make thingy happen: idean
+most things: evana
+credit creditor: julien, evan
+distractions: balatro
+not doing 28,800,000 derivatives: evan, julien
+world destruction: lemonade
+backpack face scratching: sadie
+compilations: g++
+time saving: ./build/src/poggle2d.exe
+credit for crediting the credits: juliens
+
+
+
+
