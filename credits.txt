@@ -1,6 +1,29 @@
     CREDITS
 
 game idea: idean
+save file system: evan
+lvl 0: evan
+lvl 1: evan
+lvl 2: juilan
+lvl 3: evan
+ball counter: juilan
+ball counter text: evan
+orange pegs: evan
+credit sequence: evan
+credit sequence idea: evan, juilan
+bucket: evan
+lvl -1: evan
+anoying: yarden
+overcomplicated credits: julian, evan
+parabola: evan
+pain: freetype2
+level editor and generators: evan
+save file format: evan
+code: c plus plus
+codeing assistance: chatGPT
+graphics api: openGL
+program name: asmoranomardicadaistinaculdacar
+special thanks for how to gpu: learnopengl.com
 game engine: evan
 game art: julien (internet)
 ball physics: evan
