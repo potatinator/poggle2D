@@ -17,3 +17,10 @@ anoying: yarden
 overcomplicated credits: julian, evan
 parabola: evan
 pain: freetype2
+level editor and generators: evan
+save file format: evan
+code: c plus plus
+codeing assistance: chatGPT
+graphics api: openGL
+program name: asmoranomardicadaistinaculdacar
+special thanks for how to gpu: learnopengl.com
