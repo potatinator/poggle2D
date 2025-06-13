@@ -17,14 +17,18 @@ void Credit::init(){
     }
 }
 void Credit::start(){
-
+    running = true;
+    pos = 600.0f;
 }
 void Credit::stop(){
 
     std::cout << "credits stop" << std::endl;
+    running = false;
 }
 void Credit::update(float dt){
-    pos -= speed*dt;
+    if(running){
+        pos -= speed*dt;
+    }
 }
 void Credit::draw(){
     text.RenderText(out, 50.0, pos, 1.0);
