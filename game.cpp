@@ -35,6 +35,8 @@ void Game2D::init(){
     this->credit = new Credit("credits.txt");
     credit->init();
 
+    credits = true;
+    credit->start();
 
     objects.push_back(
         new TexturedGameObject(
