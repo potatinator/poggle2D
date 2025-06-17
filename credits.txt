@@ -1,49 +1,258 @@
 CREDITS
 
 game idea:idean
+save file format:evan
 save file system:evan
+level editor and generators:evan
 lvl 0:evan
 lvl 1:evan
 lvl 2:julien
 lvl 3:evan
+lvl -1:evan
 ball counter:julien
 ball counter text:evan
 orange pegs:evan
-credit sequence:evan
-credit sequence idea:evan, julien
 bucket:evan
-lvl -1:evan
-anoying:yarden
-overcomplicated credits:julien, evan
-parabola:evan
-pain:freetype2
-level editor and generators:evan
-save file format:evan
-code:c++
-codeing assistance:chatGPT
-graphics api:openGL
-program name:asmoranomardicadaistinaculdacar
+parabolic shot predictor:evan
+peg array:evan 
+ball physics:evan
 game engine:evan
 game art:julien (internet)
-ball physics:evan
-peg array:evan 
-version control:github
 level incrementer:julien
 peggle comparisons:evan, idean
 emotional support:idean
+credit sequence:evan
+credit sequence idea:evan, julien
 knows how to make thingy happen:idean
-most things:evana
-credit creditor:julien, evan
+overcomplicated credits:julien, evan
+coding assistance:chatGPT
+operating system:windows, linux
+code:c++
+compilations:g++
+graphics api:openGL
+version control:github
+most things:evan
+program name:asmoranomardicadaistinaculdacar
+pain:freetype2
+anoying:yarden
 distractions:balatro
 not doing 28,800,000 derivatives:evan, julien
 world destruction:lemonade
 backpack face scratching:sadie
-compilations:g++
 time saving:./build/src/poggle2d.exe
-credit for crediting the credits:juliens
+driving idean and julien insane:vim
+credit creditor:julien, evan
+credit for crediting the credits:julien
 
 special thanks to
 
-learnopengl.com:for how to gpu
+learnopengl.com:how to gpu
 emma frost:powerfull woman aura farming
-caiden
+julien:crediting the credit to himself for crediting the credits
+evan:crediting the line above
+moose:deserves credit
+caiden:caiden
+
+
+
+lucas is a dog
+
+THE END
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Hmm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Thanks for watching this long
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+that line:julien
+the above line:evan
+
+
+
+
+
+
+
+the line above this:julien
+the idea to make this line:julien
+the ability to have thought of this line:brain
+having brains:homosapiens
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+close the game i dare you:-caiden "CAD model" carlson
+
+
+
+
+
+
+
+
+no, really:-evan
+
+
+
+
+
+
+
+
+why havent you closed it yet?
+
+
+
+
+
+
+
+
+
+
+
+like,
+
+
+
+
+
+it ended.
+
+a while ago
+
+
+
+
+
+
+did you not see the part that said "THE END"?
+
+
+
+
+
+
+
+
+
+
+THE
+
+GAME
+
+HAS
+
+ENDED
+
+
+
+
+
+
+
+
+ok, you asked for it
+
+
+
+
+
+
+
+
+last chance
+
+
+
+
+
+
+
+
+
+
+
+blinking manually:you
+breathing manually:you
+thinking manually:you
+loosing the game:you
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+THE REAL END
